@@ -7,12 +7,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - ./yul-yort/src/:/app/src
   server:
     build: ./yul-yort-back-end
     container_name: yul-yort-server
     restart: always
     volumes:
-      - ./server/src/:/app/src
+      - ./yul-yort-back-end/src/:/app/src
     ports:
       - "9000:9000"
     depends_on:
@@ -40,7 +42,7 @@ services:
     environment:
       PMA_ARBITRARY: 1
     ports:
-      - "5500:5500"
+      - "8080:80"
 
 networks:
   yul_yort:
