@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  client:
+    build:
+      context: ./yul-yort
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+  server:
+    build: ./yul-yort-back-end
+    container_name: yul-yort-server
+    restart: always
+    volumes:
+      - ./server/src/:/app/src
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mysql_db
+    networks:
+      - yul_yort
+  mysql_db:
+    container_name: mysql_db
+    image: mysql:8
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - yul_yort
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: yul-yort-test
+    ports:
+      - "3306:3306"
+  phpMyAdmin:
+    image: phpmyadmin
+    restart: always
+    networks:
+      - yul_yort
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - "5500:5500"
+
+networks:
+  yul_yort:
+    driver: bridge
+
+volumes:
+  db:
