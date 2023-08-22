@@ -2,6 +2,7 @@
 # repositories
 /yul-yort-back-end
 /yul-yort
+/yul-yort-admin
 
 # dependencies
 /node_modules

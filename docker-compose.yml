@@ -1,16 +1,30 @@
-version: "3"
+version: "3.8"
 
 services:
   client:
     build:
-      context: ./client
+      context: ./yul-yort
       dockerfile: Dockerfile.production
+    networks:
+      - yul_yort
+    volumes:
+      - client-build:/app/build
+  admin:
+    build:
+      context: ./yul-yort-admin
+      dockerfile: Dockerfile.production
+    networks:
+      - yul_yort
+    volumes:
+      - admin-build:/app/build
   server:
-    build: ./server
+    build:
+      context: ./yul-yort-back-end
+      dockerfile: Dockerfile
     container_name: yul-yort-server
     restart: always
     volumes:
-      - ./server/src/:/app/src
+      - ./yul-yort-back-end/src/:/app/src
     ports:
       - "9000:9000"
     depends_on:
@@ -40,15 +54,18 @@ services:
     ports:
       - "5500:5500"
   nginx:
-    # depends_on:
-    #   - client
+    image: nginx:latest
     ports:
       - "80:80"
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
+    volumes:
+      - client-build:/usr/share/nginx/html
+      - admin-build:/usr/share/nginx/admin/html
+      - ./nginx/nginx.conf:/etc/nginx/conf/conf.d/default.conf
     networks:
       - yul_yort
+    depends_on:
+      - client
+      - admin
 
 networks:
   yul_yort:
@@ -56,3 +73,5 @@ networks:
 
 volumes:
   db:
+  client-build:
+  admin-build:
