@@ -1,31 +1,31 @@
 version: "3"
 
 services:
-  # client:
-  #   restart: always
-  #   build:
-  #     context: ./yul-yort
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./yul-yort/src/:/app/src
-  #   networks:
-  #     - yul_yort
-  admin:
+  client:
     restart: always
     build:
-      context: ./yul-yort-admin
+      context: ./yul-yort
       dockerfile: Dockerfile
     ports:
-      - "4000:3000"
+      - "3000:3000"
     volumes:
-      - ./yul-yort-admin/src/:/app/src
+      - ./yul-yort/src/:/app/src
     networks:
       - yul_yort
+  # admin:
+  #   restart: always
+  #   build:
+  #     context: ./yul-yort-admin
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "4000:3000"
+  #   volumes:
+  #     - ./yul-yort-admin/src/:/app/src
+  #   networks:
+  #     - yul_yort
   server:
     build: ./yul-yort-back-end
-    container_name: yul-yort-server
+    container_name: server
     restart: always
     volumes:
       - ./yul-yort-back-end/src/:/app/src

@@ -2,26 +2,16 @@ version: "3.8"
 
 services:
   client:
-    build:
-      context: ./yul-yort
-      dockerfile: Dockerfile.production
+    image: davletkulov/yulyortcommon_client:2.0
     networks:
       - yul_yort
     volumes:
       - client-build:/app/build
-  admin:
-    build:
-      context: ./yul-yort-admin
-      dockerfile: Dockerfile.production
-    networks:
-      - yul_yort
-    volumes:
-      - admin-build:/app/build
   server:
     build:
       context: ./yul-yort-back-end
       dockerfile: Dockerfile
-    container_name: yul-yort-server
+    container_name: server
     restart: always
     volumes:
       - ./yul-yort-back-end/src/:/app/src
@@ -52,20 +42,18 @@ services:
     environment:
       PMA_ARBITRARY: 1
     ports:
-      - "5500:5500"
+      - "5500:80"
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
     volumes:
       - client-build:/usr/share/nginx/html
-      - admin-build:/usr/share/nginx/admin/html
       - ./nginx/nginx.conf:/etc/nginx/conf/conf.d/default.conf
     networks:
       - yul_yort
     depends_on:
       - client
-      - admin
 
 networks:
   yul_yort:
@@ -74,4 +62,3 @@ networks:
 volumes:
   db:
   client-build:
-  admin-build:
