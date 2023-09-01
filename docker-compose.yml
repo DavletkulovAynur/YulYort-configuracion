@@ -1,8 +1,18 @@
 version: "3.8"
 
 services:
+  admin:
+    build:
+      context: ./yul-yort-admin
+      dockerfile: Dockerfile.production
+    networks:
+      - yul_yort
+    volumes:
+      - admin-build:/app/build
   client:
-    image: davletkulov/yulyortcommon_client:2.0
+    build:
+      context: ./yul-yort
+      dockerfile: Dockerfile.production
     networks:
       - yul_yort
     volumes:
@@ -49,11 +59,13 @@ services:
       - "80:80"
     volumes:
       - client-build:/usr/share/nginx/html
+      - admin-build:/usr/share/nginx/html/admin
       - ./nginx/nginx.conf:/etc/nginx/conf/conf.d/default.conf
     networks:
       - yul_yort
     depends_on:
       - client
+      - admin
 
 networks:
   yul_yort:
@@ -62,3 +74,4 @@ networks:
 volumes:
   db:
   client-build:
+  admin-build:
