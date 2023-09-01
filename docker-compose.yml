@@ -1,12 +1,14 @@
 version: "3.8"
 
 services:
-  client:
-    image: davletkulov/yulyortcommon_client:2.0
-    networks:
-      - yul_yort
-    volumes:
-      - client-build:/app/build
+  # client:
+  #   build:
+  #     context: ./yul-yort
+  #     dockerfile: Dockerfile.production
+  #   networks:
+  #     - yul_yort
+  #   volumes:
+  #     - client-build:/app/build
   server:
     build:
       context: ./yul-yort-back-end
@@ -48,12 +50,12 @@ services:
     ports:
       - "80:80"
     volumes:
-      - client-build:/usr/share/nginx/html
+      # - client-build:/usr/share/nginx/html
       - ./nginx/nginx.conf:/etc/nginx/conf/conf.d/default.conf
     networks:
       - yul_yort
-    depends_on:
-      - client
+    # depends_on:
+    #   - client
 
 networks:
   yul_yort:
@@ -61,4 +63,4 @@ networks:
 
 volumes:
   db:
-  client-build:
+  # client-build:
