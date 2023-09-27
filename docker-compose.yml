@@ -1,28 +1,25 @@
 version: "3.8"
 
 services:
-  admin:
-    build:
-      context: ./yul-yort-admin
-      dockerfile: Dockerfile.production
-    networks:
-      - yul_yort
-    volumes:
-      - admin-build:/app/build
   client:
-    build:
-      context: ./yul-yort
-      dockerfile: Dockerfile.production
+    image: client
+    container_name: client
     networks:
       - yul_yort
     volumes:
       - client-build:/app/build
-  server:
-    build:
-      context: ./yul-yort-back-end
-      dockerfile: Dockerfile
-    container_name: server
+  admin:
+    image: admin
+    container_name: admin
+    networks:
+      - yul_yort
+    volumes:
+      - admin-build:/app/build
+  backend:
+    image: backend
+    container_name: backend
     restart: always
+    hostname: backend
     volumes:
       - ./yul-yort-back-end/src/:/app/src
     ports:
@@ -32,8 +29,8 @@ services:
     networks:
       - yul_yort
   mysql_db:
-    container_name: mysql_db
     image: mysql:8
+    container_name: mysql_db
     restart: always
     volumes:
       - db:/var/lib/mysql
@@ -47,6 +44,7 @@ services:
   phpMyAdmin:
     image: phpmyadmin
     restart: always
+    hostname: phpmyadmin
     networks:
       - yul_yort
     environment:
@@ -54,17 +52,20 @@ services:
     ports:
       - "5500:80"
   nginx:
-    image: nginx:latest
+    build: ./nginx
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
-      - client-build:/usr/share/nginx/html
+      - ./config:/usr/share/nginx/html
+      - client-build:/usr/share/nginx/html/client
       - admin-build:/usr/share/nginx/html/admin
-      - ./nginx/nginx.conf:/etc/nginx/conf/conf.d/default.conf
     networks:
       - yul_yort
     depends_on:
       - client
+      - backend
+      - phpMyAdmin
       - admin
 
 networks:
