@@ -58,8 +58,8 @@ services:
       - "80:80"
     volumes:
       - ./config:/usr/share/nginx/html
-      - client-build:/usr/share/nginx/html/client
-      - admin-build:/usr/share/nginx/html/admin
+      - client-build:/var/www/client
+      - admin-build:/var/www/admin
     networks:
       - yul_yort
     depends_on:
