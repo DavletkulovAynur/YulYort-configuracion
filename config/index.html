@@ -4,15 +4,80 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+        color: #333;
+      }
+
+      h3 {
+        font-size: 20px;
+        color: #0066cc;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        font-size: 16px;
+        color: #555;
+        padding: 40px 0;
+        text-align: left;
+      }
+
+      li:nth-child(odd) {
+        background-color: #f9f9f9;
+      }
+
+      .ready {
+        background-color: #87ff9f;
+      }
+    </style>
   </head>
   <body>
-    <h1>структура проекта</h1>
+    <h1>Структура проекта</h1>
 
     <h3>Проблемы, о которых невозможно молчать</h3>
+    <a target="_blank" href="http://yul-yort.ru/api">API</a>
+    <a target="_blank" href="http://yul-yort.ru/client">Client</a>
+    <a target="_blank" href="http://yul-yort.ru/admin">Admin</a>
     <ul>
-      <li>1. Localstotage (PWA)</li>
-      <li>2. Нужно вынести PostgresSQL отдельно</li>
-      <li>3. Прикрутить авторизацию через firebase</li>
+      <li>1. LocalStorage (PWA)</li>
+      <li class="ready">2. Нужно вынести PostgresSQL отдельно</li>
+      <li>3. Прикрутить авторизацию через Firebase</li>
+      <li>
+        <p>
+          4. Как правильно создавать Docker containers для разных архитектурных
+          процессов: apple (arm64)/ubuntu (amd64)
+        </p>
+        <strong>Решение Github ci/cd</strong>
+      </li>
+      <li>
+        <p>5. Добавить Certbot в Docker</p>
+
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/OgCXa7e-mO0?si=pMcBqJdpvm3E0T26"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      </li>
+      <li>
+        6.Нужно настроить глобальные переменные для сборки в production режим
+        внутри docker-compose
+      </li>
     </ul>
   </body>
 </html>
