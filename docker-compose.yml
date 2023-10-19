@@ -31,16 +31,30 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./config:/usr/share/nginx/html
       - client-build:/var/www/client
       - admin-build:/var/www/admin
+      - etc-letsencrypt:/etc/letsencrypt
     networks:
       - yul_yort
     depends_on:
       - client
       - backend
       - admin
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - etc-letsencrypt:/etc/letsencrypt
+      - www-html:/var/www/html
+    entrypoint: "certbot"
+    command: "certonly --webroot --webroot-path=/var/www/html --email ainurikdav@gmail.com --agree-tos --no-eff-email -d yul-yort.ru -d www.yul-yort.ru"
+    depends_on:
+      - nginx
+    networks:
+      - yul_yort
 
 networks:
   yul_yort:
@@ -49,3 +63,5 @@ networks:
 volumes:
   client-build:
   admin-build:
+  etc-letsencrypt:
+  www-html:
