@@ -36,7 +36,9 @@ services:
       - ./config:/usr/share/nginx/html
       - client-build:/var/www/client
       - admin-build:/var/www/admin
-      - etc-letsencrypt:/etc/letsencrypt
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - dhparam:/etc/ssl/certs
     networks:
       - yul_yort
     depends_on:
@@ -47,10 +49,11 @@ services:
     image: certbot/certbot
     container_name: certbot
     volumes:
-      - etc-letsencrypt:/etc/letsencrypt
-      - www-html:/var/www/html
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
     entrypoint: "certbot"
-    command: "certonly --webroot --webroot-path=/var/www/html --email ainurikdav@gmail.com --agree-tos --no-eff-email -d yul-yort.ru -d www.yul-yort.ru"
+    command: "certonly --webroot --webroot-path=/var/www/html --email ainurikdav@gmail.com --staging --agree-tos --no-eff-email -d yul-yort.ru -d www.yul-yort.ru"
     depends_on:
       - nginx
     networks:
@@ -63,5 +66,12 @@ networks:
 volumes:
   client-build:
   admin-build:
-  etc-letsencrypt:
-  www-html:
+  certbot-etc:
+  certbot-var:
+  web-root:
+  dhparam:
+    driver: local
+    driver_opts:
+      type: none
+      device: /node_project/dhparam/
+      o: bind
