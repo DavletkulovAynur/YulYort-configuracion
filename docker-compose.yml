@@ -27,7 +27,7 @@ services:
     networks:
       - yul_yort
   nginx:
-    build: ./nginx
+    image: nginx:latest
     container_name: nginx
     ports:
       - "80:80"
@@ -36,28 +36,12 @@ services:
       - ./config:/usr/share/nginx/html
       - client-build:/var/www/client
       - admin-build:/var/www/admin
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - dhparam:/etc/ssl/certs
     networks:
       - yul_yort
     depends_on:
       - client
       - backend
       - admin
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    entrypoint: "certbot"
-    command: "certonly --webroot --webroot-path=/var/www/html --email ainurikdav@gmail.com --staging --agree-tos --no-eff-email -d yul-yort.ru -d www.yul-yort.ru"
-    depends_on:
-      - nginx
-    networks:
-      - yul_yort
 
 networks:
   yul_yort:
@@ -66,12 +50,3 @@ networks:
 volumes:
   client-build:
   admin-build:
-  certbot-etc:
-  certbot-var:
-  web-root:
-  dhparam:
-    driver: local
-    driver_opts:
-      type: none
-      device: /node_project/dhparam/
-      o: bind
