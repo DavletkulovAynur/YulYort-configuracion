@@ -15,9 +15,3 @@ docker-compose -f docker-compose.dev.yml up
 ```bash
 docker-compose up
 ```
-
-### Bugs
-
-#### PWA (serviceWorkerRegistration.register())
-
-#### Homepage
