@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 # repositories
-/yul-yort-back-end
-/yul-yort
-/yul-yort-admin
+/server
+/client
+/admin
 
 # dependencies
 /node_modules

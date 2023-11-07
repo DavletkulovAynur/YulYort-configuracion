@@ -2,21 +2,21 @@ version: "3.8"
 
 services:
   client:
-    image: client
+    image: yulyort/client:latest
     container_name: client
     networks:
       - yul_yort
     volumes:
       - client-build:/app/build
   admin:
-    image: admin
+    image: yulyort/admin:latest
     container_name: admin
     networks:
       - yul_yort
     volumes:
       - admin-build:/app/build
   backend:
-    image: server
+    image: yulyort/server:latest
     container_name: backend
     restart: always
     hostname: backend
@@ -31,10 +31,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./config:/var/www/config
       - client-build:/var/www/client
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - admin-build:/var/www/admin
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - yul_yort
     depends_on:
